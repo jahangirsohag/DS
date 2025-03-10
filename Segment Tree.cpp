@@ -2,83 +2,86 @@
 
 using namespace std;
 
-const int N=1000;
+const int N = 100000;
 
 int arr[N];
+
 int tree[4*N];
 
-void build(int node, int start, int end)
+void build(int n, int b, int e)
 {
-	if(start==end)
+	if(b == e)
 	{
-		tree[node]=arr[start];
+		tree[n] = arr[b];
 		return;
 	}
-	int left=node*2+1;
-	int right=node*2+2;
-	int mid=(start+end)/2;
-	build(left,start,mid);
-	build(right,mid+1,end);
-	tree[node]=tree[left]+tree[right];
+	int l = 2*n;
+	int r = 2*n + 1;
+	int mid = (b + e) / 2;
+
+	build(l, b, mid);
+	build(r, mid+1, e);
+
+	tree[n] = max(tree[l], tree[r]);
 }
 
-int query(int node, int start, int end, int i, int j)
+void update(int n, int b, int e, int i, int x)
 {
-	if(i>end || j<start)
-	{
-		return 0;
-	}
-	if(start>=i && end<=j)
-	{
-		return tree[node];
-	}
-	int left=node*2+1;
-	int right=node*2+2;
-	int mid=(start+end)/2;
-	int p1=query(left,start,mid,i,j);
-	int p2=query(right,mid+1,end,i,j);
-	return p1+p2;
-}
-
-void update(int node, int start, int end, int i, int newValue)
-{
-	if(i<start || i>end)
+	if(i<b || e<i)
 	{
 		return;
 	}
-	if(start==end)
+	if(b == e && b == i)
 	{
-		tree[node]=newValue;
+		tree[n] = x;
 		return;
 	}
-	int left=node*2+1;
-	int right=node*2+2;
-	int mid=(start+end)/2;
-	update(left,start,mid,i,newValue);
-	update(right,mid+1,end,i,newValue);
-	tree[node]=tree[left]+tree[right];
+	int l = 2*n;
+	int r = 2*n + 1;
+	int mid = (b + e) / 2;
+
+	update(l, b, mid, i, x);
+	update(r, mid+1, e, i, x);
+
+	tree[n] = max(tree[l], tree[r]);
 }
 
-int main() {
+int query(int n, int b, int e, int i, int j)
+{
+	if(b > j || i < e)
+	{
+		return N;
+	}
+	if(b >= i && e <= j)
+	{
+		return tree[n];
+	}
+	int l = 2*n;
+	int r = 2*n + 1;
+	int mid = (b + e) / 2;
 
-	int n;
-	cin >> n;
-	for(int i=0;i<n;++i)
+	int L = query(l, b, mid, i, j);
+	int R = query(r, mid+1, e, i, j);
+
+	return max(L, R);
+}
+
+int32_t main() {
+	int n, q;
+	cin >> n >> q;
+	for(int i=1;i<=n;++i)
 	{
 		cin >> arr[i];
 	}
 
-	build(0,0,n-1);
+	build(1, 1, n);
 
-	for(int i=0;i<4*n;++i)
+	cout << tree[1] << endl;
+
+	for(int i=1; i<=2*n; ++i)
 	{
 		cout << tree[i] << " ";
 	}
-	cout << endl;
 
-	update(0,0,n-1,2,4);
-
-	cout << query(0,0,n-1,1,3) << endl;
-
-	return 0;
+  return 0;
 }
