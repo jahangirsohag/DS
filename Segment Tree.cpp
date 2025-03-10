@@ -50,7 +50,7 @@ int query(int n, int b, int e, int i, int j)
 {
 	if(b > j || i < e)
 	{
-		return N;
+		return -N;
 	}
 	if(b >= i && e <= j)
 	{
