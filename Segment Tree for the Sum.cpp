@@ -48,7 +48,7 @@ void update(int n, int b, int e, int i, int x)
 
 int query(int n, int b, int e, int i, int j)
 {
-	if(b > j || i < e)
+	if(b > j || e < i)
 	{
 		return 0;
 	}
