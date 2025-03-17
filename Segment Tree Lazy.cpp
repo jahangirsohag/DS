@@ -73,16 +73,16 @@ long long query(int n, int b, int e, int i, int j, long long carry = 0)
 }
 
 int main() {
-	int n, c;
-	cin >> n >> c;
+	int n, m;
+	cin >> n >> m;
 
 	build(1, 1, n);
 
-	while(c--)
+	while(m--)
 	{
 		int op;
 		cin >> op;
-		if(op == 0)
+		if(op == 1)
 		{
 			int i, j, x;
 			cin >> i >> j >> x;
