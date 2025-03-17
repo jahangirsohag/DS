@@ -14,7 +14,6 @@ void build(int n, int b, int e)
 	if(b == e)
 	{
 		tree[n].sum = 0;
-		tree[n].prop = 0;
 		return;
 	}
 
@@ -74,31 +73,26 @@ long long query(int n, int b, int e, int i, int j, long long carry = 0)
 }
 
 int main() {
-	int T;
-	cin >> T;
-	while(T--)
+	int n, c;
+	cin >> n >> c;
+
+	build(1, 1, n);
+
+	while(c--)
 	{
-		int n, c;
-		cin >> n >> c;
-
-		build(1, 1, n);
-
-		while(c--)
+		int op;
+		cin >> op;
+		if(op == 0)
 		{
-			int op;
-			cin >> op;
-			if(op == 0)
-			{
-				int i, j, x;
-				cin >> i >> j >> x;
-				update(1, 1, n, i, j, x);
-			}
-			else
-			{
-				int i, j;
-				cin >> i >> j;
-				cout << query(1, 1, n, i, j, 0) << endl;
-			}
+			int i, j, x;
+			cin >> i >> j >> x;
+			update(1, 1, n, i+1, j, x);
+		}
+		else
+		{
+			int i, j;
+			cin >> i >> j;
+			cout << query(1, 1, n, i+1, j) << endl;
 		}
 	}
 	return 0;
